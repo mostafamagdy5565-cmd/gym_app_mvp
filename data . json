@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "supported_languages": ["ar", "en"],
   "supported_currencies": ["EGP", "USD", "SAR", "AED"],
   "exercises": [
@@ -68,6 +68,72 @@
           ]
         }
       }
+    },
+    {
+      "id": "incline_db_press",
+      "primary_muscle": "upper_chest",
+      "equipment": ["dumbbell", "bench"],
+      "focus_tags": ["upper_chest", "symmetry"],
+      "default_sets": 3,
+      "rep_range": { "min": 8, "max": 12 },
+      "rest_seconds": 120,
+      "video_asset": "vid_incline_db_press_ai.mp4",
+      "ai_video_prompt": "Realistic athletic male gym avatar in a fitted dark t-shirt, lying on a 30-degree incline bench, performing controlled dumbbell incline presses. Clear diagonal angle showing chest stretch at bottom and controlled press without locking elbows harshly, smooth loop.",
+      "i18n": {
+        "ar": {
+          "name": "ضغط صدر مائل بالدمبل",
+          "cues": [
+            "اجعل زاوية البنش مائلة بوضوح (حوالي 30 درجة) مع تثبيت لوحي الكتف.",
+            "انزل بالدمبل بتحكم قرب أعلى الصدر ثم ادفع للأعلى."
+          ],
+          "mistakes": [
+            "تقويس الظهر بشكل مفرط أو خبط الدمبل في الأعلى."
+          ]
+        },
+        "en": {
+          "name": "Incline Dumbbell Press",
+          "cues": [
+            "Set bench around a 30-degree incline with shoulder blades pinned back.",
+            "Lower dumbbells under control near upper chest and press up."
+          ],
+          "mistakes": [
+            "Over-arching the lower back or clanking weights at the top."
+          ]
+        }
+      }
+    },
+    {
+      "id": "leg_press_machine",
+      "primary_muscle": "quads",
+      "equipment": ["machine"],
+      "focus_tags": ["quads", "lower_body_mass"],
+      "default_sets": 3,
+      "rep_range": { "min": 10, "max": 15 },
+      "rest_seconds": 150,
+      "video_asset": "vid_leg_press_machine_ai.mp4",
+      "ai_video_prompt": "Realistic athletic male gym avatar in a fitted dark t-shirt and athletic shorts, seated on a leg press machine, performing controlled leg presses. Clear side angle showing controlled knee flexion and full foot contact without lower back lifting, smooth loop.",
+      "i18n": {
+        "ar": {
+          "name": "دفع أرجل على الجهاز (Leg Press)",
+          "cues": [
+            "ثبّت أسفل الظهر والحوض على المقعد طوال العدة.",
+            "انزل بالوزن بتحكم وادفع بكامل القدم دون قفل الركبة بعنف."
+          ],
+          "mistakes": [
+            "رفع المؤخرة عن المقعد أو النزول السريع غير المتحكم فيه."
+          ]
+        },
+        "en": {
+          "name": "Leg Press Machine",
+          "cues": [
+            "Keep lower back and glutes planted against the pad throughout.",
+            "Lower under control and press through the whole foot without hard knee lockout."
+          ],
+          "mistakes": [
+            "Lifting hips off the pad or bouncing/dropping the weight."
+          ]
+        }
+      }
     }
   ],
   "meals": [
@@ -92,6 +158,50 @@
           "ingredients": "Oats + milk + 2 boiled eggs + 1 fruit"
         }
       }
+    },
+    {
+      "id": "meal_chicken_rice_salad",
+      "goal": ["lean_bulk", "cut", "recomp"],
+      "calories": 640,
+      "protein_g": 46,
+      "estimated_cost": {
+        "EGP": 110,
+        "SAR": 16,
+        "AED": 16,
+        "USD": 4.5
+      },
+      "i18n": {
+        "ar": {
+          "title": "صدور دجاج مشوية مع أرز وسلطة",
+          "ingredients": "صدور دجاج + أرز مطبوخ + خضار وسلطة + ملعقة زيت"
+        },
+        "en": {
+          "title": "Grilled Chicken Breast with Rice and Salad",
+          "ingredients": "Chicken breast + cooked rice + salad greens + 1 tsp oil"
+        }
+      }
+    },
+    {
+      "id": "meal_tuna_potato_greens",
+      "goal": ["cut", "recomp"],
+      "calories": 430,
+      "protein_g": 34,
+      "estimated_cost": {
+        "EGP": 75,
+        "SAR": 11,
+        "AED": 11,
+        "USD": 3
+      },
+      "i18n": {
+        "ar": {
+          "title": "تونة مصفّاة مع بطاطس مسلوقة وخضار",
+          "ingredients": "تونة + بطاطس متوسطة + خيار وطماطم + ليمون"
+        },
+        "en": {
+          "title": "Drained Tuna with Boiled Potato and Greens",
+          "ingredients": "Tuna + medium potato + cucumber & tomato + lemon"
+        }
+      }
     }
   ],
   "goal_roadmaps": [
@@ -113,6 +223,28 @@
             "Phase 1 (Weeks 1–6): Dial in calories and protein within budget and lock in core lifts.",
             "Phase 2 (Weeks 7–12): Prioritize lateral delts and upper back for symmetry.",
             "Phase 3 (Weeks 13–16): Compare current photo against reference physique and adjust intake."
+          ]
+        }
+      }
+    },
+    {
+      "target_body_type": "classic_v_taper",
+      "estimated_duration_weeks": 20,
+      "i18n": {
+        "ar": {
+          "title": "مسار اتساع الكتف والظهر مع خصر مشدود",
+          "steps": [
+            "المرحلة 1 (أسابيع 1–8): تقليل فائض السعرات تدريجياً للحفاظ على محيط الخصر مع بناء القوة.",
+            "المرحلة 2 (أسابيع 9–16): زيادة حجم التمرين للكتف الجانبي والصدر العلوي والسحب الأفقي.",
+            "المرحلة 3 (أسابيع 17–20): مقارنة التقدم بصورة الهدف وضبط الميزانية اليومية للوجبات."
+          ]
+        },
+        "en": {
+          "title": "V-Taper Shoulder & Back Width Roadmap",
+          "steps": [
+            "Phase 1 (Weeks 1–8): Keep energy intake controlled to protect waistline while building core strength.",
+            "Phase 2 (Weeks 9–16): Increase volume on lateral delts, upper chest, and rows.",
+            "Phase 3 (Weeks 17–20): Benchmark against reference physique and fine-tune daily meal budget."
           ]
         }
       }
