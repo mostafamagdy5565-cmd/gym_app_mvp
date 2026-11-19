@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0.0",
+  "supported_languages": ["ar", "en"],
+  "supported_currencies": ["EGP", "USD", "SAR", "AED"],
+  "exercises": [
+    {
+      "id": "lateral_raise_db",
+      "primary_muscle": "lateral_delt",
+      "equipment": ["dumbbell"],
+      "focus_tags": ["lateral_delt", "symmetry"],
+      "default_sets": 3,
+      "rep_range": { "min": 12, "max": 15 },
+      "rest_seconds": 75,
+      "video_asset": "vid_lateral_raise_db_ai.mp4",
+      "ai_video_prompt": "Realistic athletic male gym avatar in a fitted dark t-shirt, performing controlled dumbbell lateral raises in a clean gym. Clear side-front angle, controlled tempo, pausing slightly at shoulder height, smooth loop.",
+      "i18n": {
+        "ar": {
+          "name": "رفرفة جانبية بالدمبل",
+          "cues": [
+            "ثبّت جذعك واقفاً مع ثني خفيف وثابت في الكوع.",
+            "ارفع للجانب حتى مستوى الكتف بتحكم كامل."
+          ],
+          "mistakes": [
+            "مرجحة الجسم أو رفع الوزن أعلى من الكتف بشكل مبالغ."
+          ]
+        },
+        "en": {
+          "name": "Dumbbell Lateral Raise",
+          "cues": [
+            "Stand tall with a slight, fixed bend in the elbows.",
+            "Raise out to shoulder level under full control."
+          ],
+          "mistakes": [
+            "Using body momentum or shrugging/raising overly high."
+          ]
+        }
+      }
+    },
+    {
+      "id": "chest_supported_row",
+      "primary_muscle": "upper_back",
+      "equipment": ["machine", "dumbbell"],
+      "focus_tags": ["upper_back", "posture", "symmetry"],
+      "default_sets": 3,
+      "rep_range": { "min": 8, "max": 12 },
+      "rest_seconds": 120,
+      "video_asset": "vid_chest_supported_row_ai.mp4",
+      "ai_video_prompt": "Realistic athletic male gym avatar in a fitted dark t-shirt, chest braced against an incline bench pad, performing a controlled chest-supported row. Clear angle showing scapular retraction and controlled extension, smooth loop.",
+      "i18n": {
+        "ar": {
+          "name": "سحب أفقي بدعم الصدر",
+          "cues": [
+            "ثبّت صدرك على المسند طوال الحركة.",
+            "اسحب باتجاه أسفل الصدر/البطن مع ضم لوحي الكتف."
+          ],
+          "mistakes": [
+            "رفع الصدر عن المسند أو تقصير مدى الحركة."
+          ]
+        },
+        "en": {
+          "name": "Chest-Supported Row",
+          "cues": [
+            "Keep your chest braced against the pad throughout.",
+            "Pull toward lower ribs/abdomen while squeezing shoulder blades."
+          ],
+          "mistakes": [
+            "Lifting chest off the pad or cutting range of motion."
+          ]
+        }
+      }
+    }
+  ],
+  "meals": [
+    {
+      "id": "meal_oats_eggs_milk",
+      "goal": ["lean_bulk", "recomp"],
+      "calories": 520,
+      "protein_g": 28,
+      "estimated_cost": {
+        "EGP": 45,
+        "SAR": 7,
+        "AED": 7,
+        "USD": 2
+      },
+      "i18n": {
+        "ar": {
+          "title": "شوفان بالحليب وبيض مسلوق",
+          "ingredients": "شوفان + حليب + 2 بيضة + ثمرة فاكهة"
+        },
+        "en": {
+          "title": "Oats with Milk and Boiled Eggs",
+          "ingredients": "Oats + milk + 2 boiled eggs + 1 fruit"
+        }
+      }
+    }
+  ],
+  "goal_roadmaps": [
+    {
+      "target_body_type": "lean_athletic",
+      "estimated_duration_weeks": 16,
+      "i18n": {
+        "ar": {
+          "title": "مسار الجسم الرياضي المتناسق",
+          "steps": [
+            "المرحلة 1 (أسابيع 1–6): ضبط السعرات والبروتين ضمن الميزانية وتثبيت أوزان التمارين الأساسية.",
+            "المرحلة 2 (أسابيع 7–12): التركيز على الكتف الجانبي والظهر العلوي لتعزيز التناسق.",
+            "المرحلة 3 (أسابيع 13–16): تقييم الصورة الحالية مقارنة بالصورة المرجعية وتعديل السعرات."
+          ]
+        },
+        "en": {
+          "title": "Lean Athletic Physique Roadmap",
+          "steps": [
+            "Phase 1 (Weeks 1–6): Dial in calories and protein within budget and lock in core lifts.",
+            "Phase 2 (Weeks 7–12): Prioritize lateral delts and upper back for symmetry.",
+            "Phase 3 (Weeks 13–16): Compare current photo against reference physique and adjust intake."
+          ]
+        }
+      }
+    }
+  ]
+}
