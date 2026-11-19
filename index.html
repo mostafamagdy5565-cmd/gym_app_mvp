@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مخطط الجيم الذكي — MVP</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --card-2: #0b1220;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #22c55e;
+      --accent-2: #38bdf8;
+      --border: #334155;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px;
+      line-height: 1.5;
+    }
+    .container { max-width: 920px; margin: 0 auto; }
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card);
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .title { font-size: 1.2rem; font-weight: 700; margin: 0; }
+    .controls-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    button, select, input, textarea {
+      background: var(--card-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 0.95rem;
+    }
+    button { cursor: pointer; font-weight: 600; }
+    button.primary {
+      background: var(--accent);
+      color: #052e16;
+      border: none;
+    }
+    button.active-tab {
+      background: var(--accent-2);
+      color: #082f49;
+      border: none;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .card h3 { margin: 0 0 10px; font-size: 1.05rem; color: var(--accent-2); }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+    .field label { font-size: 0.88rem; color: var(--muted); }
+    .item-box {
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 8px;
+    }
+    .badge {
+      display: inline-block;
+      background: #172554;
+      color: #bae6fd;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-inline-end: 6px;
+    }
+    .muted { color: var(--muted); font-size: 0.88rem; }
+    .hidden { display: none; }
+    pre.prompt-box {
+      white-space: pre-wrap;
+      background: #020617;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      margin: 6px 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <h1 class="title" id="app-title">مخطط الجيم الذكي</h1>
+      <div class="controls-row">
+        <button id="mode-client-btn" class="active-tab" onclick="setMode('client')">الشخص العادي</button>
+        <button id="mode-coach-btn" onclick="setMode('coach')">المدرب</button>
+        <button id="lang-toggle-btn" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+
+    <!-- وضع الشخص العادي -->
+    <div id="client-section">
+      <div class="grid">
+        <div class="card">
+          <h3>الهدف والميزانية اليومية</h3>
+          <div class="field">
+            <label for="goal-select">الهدف</label>
+            <select id="goal-select" onchange="refreshAll()">
+              <option value="lean_bulk">تضخيم نظيف</option>
+              <option value="recomp" selected>إعادة تشكيل الجسم</option>
+              <option value="cut">تنشيف</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="currency-select">العملة</label>
+            <select id="currency-select" onchange="refreshAll()">
+              <option value="EGP" selected>EGP</option>
+              <option value="SAR">SAR</option>
+              <option value="AED">AED</option>
+              <option value="USD">USD</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="budget-input">الميزانية اليومية</label>
+            <input id="budget-input" type="number" value="200" min="1" oninput="refreshAll()" />
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>جدول التمرين وشكل الجسم</h3>
+          <div class="field">
+            <label for="days-select">عدد أيام التمرين في الأسبوع</label>
+            <select id="days-select" onchange="refreshAll()">
+              <option value="3">3 أيام</option>
+              <option value="4" selected>4 أيام</option>
+              <option value="5">5 أيام</option>
+              <option value="6">6 أيام</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="body-type-select">صورة الهدف الرياضي</label>
+            <select id="body-type-select" onchange="refreshAll()">
+              <option value="lean_athletic" selected>جسم رياضي متناسق</option>
+              <option value="classic_v_taper">اتساع الكتف والظهر (V-Taper)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="focus-input">نقاط التركيز (مفصولة بفاصلة)</label>
+            <input id="focus-input" type="text" value="lateral_delt, upper_back, symmetry" oninput="refreshAll()" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>النظام الغذائي المقترح</h3>
+        <div id="meals-output"></div>
+      </div>
+
+      <div class="card">
+        <h3>جدول التمرين وفيديوهات الـ AI</h3>
+        <div id="workout-output"></div>
+      </div>
+
+      <div class="card">
+        <h3>فحص الجسم وخارطة الطريق</h3>
+        <div id="roadmap-output"></div>
+      </div>
+    </div>
+
+    <!-- وضع المدرب -->
+    <div id="coach-section" class="hidden">
+      <div class="card">
+        <h3>إضافة أو تحديث خطة متدرب</h3>
+        <div class="grid">
+          <div class="field">
+            <label for="client-name-input">اسم المتدرب</label>
+            <input id="client-name-input" type="text" placeholder="مثال: محمود حسن" />
+          </div>
+          <div class="field">
+            <label for="client-adherence-input">نسبة الالتزام (%)</label>
+            <input id="client-adherence-input" type="number" value="80" min="0" max="100" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="coach-note-input">ملاحظة المدرب للمتدرب</label>
+          <textarea id="coach-note-input" rows="2" placeholder="اكتب توجيهات التمرين أو التغذية..."></textarea>
+        </div>
+        <button class="primary" onclick="saveClientFromCoach()">حفظ في متابعة المدرب</button>
+      </div>
+
+      <div class="card">
+        <h3>ملخص متابعة المتدربين</h3>
+        <div id="coach-summary-output"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./i18n_controller.js"></script>
+  <script src="./meal_planner.js"></script>
+  <script src="./workout_generator.js"></script>
+  <script src="./physique_roadmap.js"></script>
+  <script src="./coach_manager.js"></script>
+  <script>
+    let appData = null;
+    let currentLang = "ar";
+    let currentMode = "client";
+    const coachWorkspace = createCoachWorkspace("Coach");
+
+    async function initApp() {
+      try {
+        const res = await fetch("./data.json");
+        appData = await res.json();
+      } catch (e) {
+        appData = { exercises: [], meals: [], goal_roadmaps: [] };
+      }
+      assignClientPlan(coachWorkspace, {
+        clientId: "client_demo_1",
+        name: "متدرب تجريبي 1",
+        goal: "recomp",
+        dailyBudget: 200,
+        currency: "EGP",
+        daysPerWeek: 4,
+        focusTags: ["lateral_delt", "upper_back"],
+        targetBodyType: "lean_athletic",
+        adherencePercent: 85
+      });
+      refreshAll();
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === "ar" ? "en" : "ar";
+      const cfg = getLanguageConfig(currentLang);
+      document.documentElement.lang = cfg.lang;
+      document.documentElement.dir = cfg.dir;
+      document.getElementById("lang-toggle-btn").textContent = currentLang === "ar" ? "EN" : "AR";
+      document.getElementById("app-title").textContent = cfg.strings.appName;
+      refreshAll();
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      const isClient = mode === "client";
+      document.getElementById("client-section").classList.toggle("hidden", !isClient);
+      document.getElementById("coach-section").classList.toggle("hidden", isClient);
+      document.getElementById("mode-client-btn").classList.toggle("active-tab", isClient);
+      document.getElementById("mode-coach-btn").classList.toggle("active-tab", !isClient);
+      refreshCoachView();
+    }
+
+    function refreshAll() {
+      if (!appData) return;
+      const goal = document.getElementById("goal-select").value;
+      const currency = document.getElementById("currency-select").value;
+      const dailyBudget = Number(document.getElementById("budget-input").value || 0);
+      const daysPerWeek = Number(document.getElementById("days-select").value || 4);
+      const targetBodyType = document.getElementById("body-type-select").value;
+      const focusTags = document
+        .getElementById("focus-input")
+        .value.split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      const mealRes = buildDailyMealPlan({
+        meals: appData.meals || [],
+        dailyBudget,
+        currency,
+        goal,
+        lang: currentLang
+      });
+
+      const mealsEl = document.getElementById("meals-output");
+      const totals = mealRes.totals;
+      const mealsHtml = (mealRes.selectedMeals || [])
+        .map(
+          (m) => `
+          <div class="item-box">
+            <strong>${m.title}</strong> — <span class="badge">${m.cost} ${totals.currency}</span>
+            <span class="badge">${m.calories} kcal</span>
+            <span class="badge">${m.protein_g}g protein</span>
+            <div class="muted">${m.ingredients}</div>
+          </div>`
+        )
+        .join("");
+      mealsEl.innerHTML = `
+        <div>
+          <span class="badge">Total: ${totals.cost} ${totals.currency}</span>
+          <span class="badge">Remaining: ${totals.remainingBudget} ${totals.currency}</span>
+          <span class="badge">Calories: ${totals.calories}</span>
+          <span class="badge">Protein: ${totals.protein_g}g</span>
+        </div>
+        ${mealRes.note ? `<p class="muted">${mealRes.note}</p>` : ""}
+        ${mealsHtml || `<p class="muted">-</p>`}
+      `;
+
+      const workoutRes = generateWorkoutSchedule({
+        exercises: appData.exercises || [],
+        daysPerWeek,
+        focusTags,
+        lang: currentLang
+      });
+
+      const workoutEl = document.getElementById("workout-output");
+      workoutEl.innerHTML = (workoutRes.days || [])
+        .map((day) => {
+          const exHtml = (day.exercises || [])
+            .map(
+              (ex) => `
+              <div class="item-box">
+                <strong>${ex.name}</strong> — <span class="badge">${ex.sets} x ${ex.reps}</span>
+                <span class="badge">${ex.rest_seconds}s</span>
+                <div class="muted">${ex.video_asset}</div>
+                <pre class="prompt-box">${ex.ai_video_prompt}</pre>
+              </div>`
+            )
+            .join("");
+          return `<div class="item-box"><strong>${day.title}</strong>${exHtml}</div>`;
+        })
+        .join("");
+
+      const roadmapRes = buildPhysiqueRoadmap({
+        roadmaps: appData.goal_roadmaps || [],
+        targetBodyType,
+        userPriorities: focusTags,
+        lang: currentLang
+      });
+
+      const roadmapEl = document.getElementById("roadmap-output");
+      const stepsHtml = (roadmapRes.steps || [])
+        .map((st) => `<li class="item-box">${st}</li>`)
+        .join("");
+      roadmapEl.innerHTML = `
+        <div><strong>${roadmapRes.title || ""}</strong> — <span class="badge">${roadmapRes.estimated_duration_weeks || 16} weeks</span></div>
+        <p class="muted">${roadmapRes.comparisonNote || ""}</p>
+        <ul style="padding-inline-start:18px; margin:0;">${stepsHtml}</ul>
+      `;
+
+      refreshCoachView();
+    }
+
+    function saveClientFromCoach() {
+      const nameInput = document.getElementById("client-name-input");
+      const adhInput = document.getElementById("client-adherence-input");
+      const noteInput = document.getElementById("coach-note-input");
+
+      const name = nameInput.value.trim() || `Client ${coachWorkspace.clients.length + 1}`;
+      const clientId = "client_" + name.toLowerCase().replace(/\s+/g, "_");
+      const adherencePercent = Number(adhInput.value || 0);
+      const noteText = noteInput.value.trim();
+
+      assignClientPlan(coachWorkspace, {
+        clientId,
+        name,
+        goal: document.getElementById("goal-select").value,
+        dailyBudget: Number(document.getElementById("budget-input").value || 0),
+        currency: document.getElementById("currency-select").value,
+        daysPerWeek: Number(document.getElementById("days-select").value || 4),
+        targetBodyType: document.getElementById("body-type-select").value,
+        adherencePercent
+      });
+
+      if (noteText) {
+        addCoachNote(coachWorkspace, clientId, noteText, currentLang);
+      }
+
+      nameInput.value = "";
+      noteInput.value = "";
+      refreshCoachView();
+    }
+
+    function refreshCoachView() {
+      const summary = getCoachDashboardSummary(coachWorkspace, currentLang);
+      const out = document.getElementById("coach-summary-output");
+      if (!out) return;
+      const cards = (summary.clients || [])
+        .map(
+          (c) => `
+          <div class="item-box">
+            <strong>${c.name}</strong> — <span class="badge">${c.adherencePercent}%</span>
+            <span class="badge">${c.daysPerWeek} days</span>
+            <span class="badge">${c.dailyBudget} ${c.currency}</span>
+            <div class="muted">${c.latestNote}</div>
+          </div>`
+        )
+        .join("");
+      out.innerHTML = `
+        <div>
+          <span class="badge">Clients: ${summary.totalClients}</span>
+          <span class="badge">Avg Adherence: ${summary.averageAdherence}%</span>
+        </div>
+        ${cards}
+      `;
+    }
+
+    initApp();
+  </script>
+</body>
+</html>
