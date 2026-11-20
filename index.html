@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GYM APP MVP — Smart Fitness & Nutrition</title>
+  <style>
+    :root {
+      --bg: #0c0d10;
+      --surface: #151820;
+      --surface-2: #1d222d;
+      --gold: #d4af37;
+      --gold-soft: rgba(212, 175, 55, 0.16);
+      --text: #f5f6f8;
+      --muted: #a3aab8;
+      --accent: #22c55e;
+      --border: rgba(255, 255, 255, 0.09);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1b1810 0%, var(--bg) 45%);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 84px;
+      line-height: 1.55;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(12, 13, 16, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--gold);
+      font-size: 1.05rem;
+    }
+
+    .brand-badge {
+      background: var(--gold-soft);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    select, input, textarea, button {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 0.9rem;
+    }
+
+    select:focus, input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.12s ease, opacity 0.15s ease;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #e5c158, #b88b1e);
+      color: #111;
+      border: none;
+    }
+
+    .btn-ghost {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 18px 16px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(21, 24, 32, 0.95));
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero h1 {
+      font-size: 1.45rem;
+      color: var(--text);
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .stat-card span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .stat-card strong {
+      font-size: 1.15rem;
+      color: var(--gold);
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .pill.active {
+      background: var(--gold);
+      color: #111;
+      border-color: var(--gold);
+      font-weight: 800;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .photo-box {
+      background: var(--surface-2);
+      border: 1px dashed rgba(212, 175, 55, 0.45);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .preview-frame {
+      width: 100%;
+      height: 190px;
+      border-radius: 10px;
+      background: #0f1218;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .preview-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+
+    .meal-list, .workout-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .item-row {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .item-meta {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .price-tag {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 0.92rem;
+    }
+
+    .video-slot {
+      background: #0d1016;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 25;
+      background: rgba(15, 17, 23, 0.96);
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 6px 8px;
+      gap: 4px;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: 7px 4px;
+      font-size: 0.78rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .nav-btn.active {
+      color: var(--gold);
+      font-weight: 800;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: grid;
+      gap: 18px;
+    }
+
+    .notice {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: #bbf7d0;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span>GYM APP MVP</span>
+      <span class="brand-badge" id="portalBadge">متدرب / Trainee</span>
+    </div>
+    <div class="controls">
+      <select id="langSelect" aria-label="Language">
+        <option value="ar">العربية</option>
+        <option value="en">English</option>
+      </select>
+      <select id="currencySelect" aria-label="Currency">
+        <option value="EGP">EGP (ج.م)</option>
+        <option value="USD">USD ($)</option>
+        <option value="SAR">SAR (ر.س)</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- SECTION 1: HOME & PHYSIQUE -->
+    <section id="sec-home" class="section active">
+      <div class="hero">
+        <h1 id="heroTitle">قوة الفرعون وتخطيط ذكي لفورمتك وتغذيتك</h1>
+        <p id="heroSub">نظام متكامل لتحليل الجسم ومقارنة الهدف، جداول التمرين (Push / Arnold)، خطط الوجبات حسب الميزانية، وبوابات المدرب والمتدرب.</p>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span id="lblCalories">الاحتياج اليومي التقريبي</span>
+            <strong id="valCalories">2,450 kcal</strong>
+          </div>
+          <div class="stat-card">
+            <span id="lblBmi">مؤشر الكتلة (BMI)</span>
+            <strong id="valBmi">23.4</strong>
+          </div>
+          <div class="stat-card">
+            <span id="lblBudget">ميزانية الوجبات اليومية</span>
+            <strong id="valBudget">150 ج.م</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title" id="physiqueTitle">تحليل الفورمة ومقارنة الهدف (Physique & Goal Comparison)</h2>
+          <button class="btn-ghost" onclick="switchSection('sec-coach')" id="btnGoCoach">تواصل مع المدرب</button>
+        </div>
+
+        <div class="form-grid">
+          <div>
+            <label class="item-meta" id="lblWeight">الوزن (كجم)</label>
+            <input type="number" id="weightInput" value="76" min="35" max="250" oninput="recalcMetrics()" />
+          </div>
+          <div>
+            <label class="item-meta" id="lblHeight">الطول (سم)</label>
+            <input type="number" id="heightInput" value="178" min="120" max="230" oninput="recalcMetrics()" />
+          </div>
+          <div>
+            <label class="item-meta" id="lblGoalSelect">الهدف الأساسي</label>
+            <select id="goalSelect" onchange="renderMeals(); recalcMetrics();">
+              <option value="cutting">تنشيف (Cutting)</option>
+              <option value="bulking">تضخيم (Bulking)</option>
+              <option value="symmetry">تناسق عضلي (Muscle Symmetry)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="compare-grid">
+          <div class="photo-box">
+            <strong id="lblCurrentPhoto">صورة الحالة الحالية</strong>
+            <div class="preview-frame" id="currentPreview">ارفع صورة أو اختر معاينة</div>
+            <input type="file" accept="image/*" onchange="previewImage(event, 'currentPreview')" />
+          </div>
+          <div class="photo-box">
+            <strong id="lblTargetPhoto">صورة الفورمة المستهدفة (Goal)</strong>
+            <div class="preview-frame" id="targetPreview">
+              <div>
+                <div style="font-size: 1.5rem; color: var(--gold);">GOAL PHYSIQUE</div>
+                <div id="targetCaption">تناسق الكتفين والظهر وتحديد العضلات</div>
+              </div>
+            </div>
+            <input type="file" accept="image/*" onchange="previewImage(event, 'targetPreview')" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: WORKOUTS -->
+    <section id="sec-workouts" class="section">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title" id="workoutTitle">جداول التمرين وفيديوهات الأداء</h2>
+          <div class="pill-row">
+            <button class="pill active" id="splitPush" onclick="setSplit('push')">Push Split</button>
+            <button class="pill" id="splitArnold" onclick="setSplit('arnold')">Arnold Split</button>
+          </div>
+        </div>
+
+        <div class="video-slot" id="videoBox">
+          <strong>معاينة فيديو التمرين الواقعي (AI Exercise Demo Slot):</strong>
+          <p id="videoDesc">اختر تمريناً من الجدول لعرض تعليمات الأداء ومكان ربط فيديو التوضيح الواقعي (مثل ملف MP4 أو رابط فيديو تدريبي).</p>
+        </div>
+
+        <div class="workout-list" id="workoutList"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: BUDGET MEAL PLAN -->
+    <section id="sec-meals" class="section">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title" id="mealTitle">خطط الوجبات اليومية حسب الميزانية والهدف</h2>
+        </div>
+
+        <div class="form-grid">
+          <div>
+            <label class="item-meta" id="lblBudgetInput">ميزانية اليوم (بالعملة المختارة)</label>
+            <input type="number" id="budgetInput" value="180" min="20" step="10" oninput="renderMeals()" />
+          </div>
+          <div>
+            <label class="item-meta" id="lblMealGoal">النظام الغذائي</label>
+            <select id="mealGoalSelect" onchange="renderMeals()">
+              <option value="cutting">تنشيف (Cutting)</option>
+              <option value="bulking">تضخيم (Bulking)</option>
+              <option value="symmetry">تناسق عضلي (Muscle Symmetry)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="meal-list" id="mealList"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: TRAINER & TRAINEE PORTALS -->
+    <section id="sec-coach" class="section">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title" id="portalTitle">بوابات المدرب والمتدرب (Trainer & Trainee Portals)</h2>
+          <div class="pill-row">
+            <button class="pill active" id="tabTrainee" onclick="setPortal('trainee')">بوابة المتدرب</button>
+            <button class="pill" id="tabTrainer" onclick="setPortal('trainer')">بوابة المدرب</button>
+          </div>
+        </div>
+
+        <div id="traineePortalBox">
+          <h3 style="margin-bottom: 10px; font-size: 1rem;" id="contactTitle">نموذج التواصل مع المدرب (Coach Contact Form)</h3>
+          <form onsubmit="submitCoachForm(event)" style="display: grid; gap: 10px;">
+            <div class="form-grid">
+              <input type="text" id="clientName" placeholder="الاسم بالكامل" required />
+              <input type="text" id="clientGoal" placeholder="الهدف (تنشيف / تضخيم / تناسق)" required />
+              <input type="number" id="clientBudget" placeholder="الميزانية اليومية" required />
+            </div>
+            <textarea id="clientNotes" rows="3" placeholder="اكتب رسالتك أو ملاحظاتك للمدرب (الإصابات، مواعيد التمرين، الاستفسارات)..." required></textarea>
+            <button type="submit" class="btn-gold" id="btnSendCoach">إرسال الطلب إلى المدرب</button>
+          </form>
+          <div class="notice" id="formNotice">تم حفظ طلبك وإرساله إلى سجل المتابعة بنجاح.</div>
+        </div>
+
+        <div id="trainerPortalBox" style="display: none;">
+          <h3 style="margin-bottom: 10px; font-size: 1rem;" id="trainerQueueTitle">طلبات المتدربين المسجلة</h3>
+          <div id="requestsContainer" class="meal-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="switchSection('sec-home')">
+      <span>🏠</span>
+      <span id="navHomeTxt">الرئيسية</span>
+    </button>
+    <button class="nav-btn" id="nav-workouts" onclick="switchSection('sec-workouts')">
+      <span>🏋️</span>
+      <span id="navWorkoutsTxt">التمارين</span>
+    </button>
+    <button class="nav-btn" id="nav-meals" onclick="switchSection('sec-meals')">
+      <span>🥗</span>
+      <span id="navMealsTxt">الوجبات</span>
+    </button>
+    <button class="nav-btn" id="nav-coach" onclick="switchSection('sec-coach')">
+      <span>👤</span>
+      <span id="navCoachTxt">البوابات</span>
+    </button>
+  </nav>
+
+  <script>
+    const rates = { EGP: 1, USD: 0.02, SAR: 0.075 };
+    const symbols = { EGP: "ج.م", USD: "$", SAR: "ر.س" };
+
+    const workoutsData = {
+      push: [
+        { name: "Flat Barbell / Dumbbell Press", muscle: "Chest", sets: "4 × 8-10", tip: "حافظ على ثبات لوحي الكتف وأسفل الظهر على المقعد." },
+        { name: "Incline Press", muscle: "Upper Chest", sets: "3 × 10-12", tip: "زاوية ميل 30 درجة تركز على الجزء العلوي للصدر." },
+        { name: "Lateral Raises", muscle: "Side Delts", sets: "4 × 12-15", tip: "ارفع الكوع للجانب دون مرجحة مفرطة بالجسم." },
+        { name: "Triceps Rope Pushdown", muscle: "Triceps", sets: "3 × 12-15", tip: "ثبّت الكوعين بجانب الجذع وافرد الذراعين بالكامل." }
+      ],
+      arnold: [
+        { name: "Bench Press + Bent-Over Row Superset", muscle: "Chest & Back", sets: "4 × 8-10", tip: "توازن القوة بين الدفع والسحب لبناء كثافة عضلية." },
+        { name: "Arnold Shoulder Press", muscle: "Front & Side Delts", sets: "3 × 10-12", tip: "ابدأ بقبضة مواجهة لك ثم لف المعصم أثناء الدفع للأعلى." },
+        { name: "Barbell Curl + Skull Crusher", muscle: "Biceps & Triceps", sets: "3 × 10-12", tip: "تحكم كامل في مرحلة النزول لزيادة زمن التوتر العضلي." },
+        { name: "Hanging Leg Raise + Cable Crunch", muscle: "Core & Symmetry", sets: "3 × 15", tip: "ركّز على انقباض البطن وليس ثني الفخذ فقط." }
+      ]
+    };
+
+    const mealsPool = [
+      { titleAr: "فطور بيض مسلوق + شوفان + موزة", titleEn: "Boiled Eggs + Oats + Banana", baseCostEgp: 45, kcal: 540, goal: "symmetry" },
+      { titleAr: "صدور دجاج مشوية + أرز بسمتي + سلطة", titleEn: "Grilled Chicken + Rice + Salad", baseCostEgp: 95, kcal: 680, goal: "bulking" },
+      { titleAr: "تونة مصفاة + بطاطس مسلوقة + خيار", titleEn: "Tuna + Boiled Potato + Cucumber", baseCostEgp: 65, kcal: 430, goal: "cutting" },
+      { titleAr: "جبنة قريش أو زبادي يوناني + مكسرات خفيفة", titleEn: "Cottage/Greek Yogurt + Light Nuts", baseCostEgp: 40, kcal: 310, goal: "cutting" },
+      { titleAr: "لحم بقري قليل الدهن + مكرونة + خضار", titleEn: "Lean Beef + Pasta + Veggies", baseCostEgp: 120, kcal: 790, goal: "bulking" }
+    ];
+
+    let currentSplit = "push";
+
+    function formatMoney(egpAmount) {
+      const curr = document.getElementById("currencySelect").value;
+      const val = (egpAmount * rates[curr]).toFixed(curr === "EGP" ? 0 : 2);
+      return `${val} ${symbols[curr]}`;
+    }
+
+    function switchSection(id) {
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      const mapNav = {
+        "sec-home": "nav-home",
+        "sec-workouts": "nav-workouts",
+        "sec-meals": "nav-meals",
+        "sec-coach": "nav-coach"
+      };
+      document.getElementById(mapNav[id]).classList.add("active");
+    }
+
+    function setSplit(split) {
+      currentSplit = split;
+      document.getElementById("splitPush").classList.toggle("active", split === "push");
+      document.getElementById("splitArnold").classList.toggle("active", split === "arnold");
+      renderWorkouts();
+    }
+
+    function renderWorkouts() {
+      const box = document.getElementById("workoutList");
+      box.innerHTML = "";
+      workoutsData[currentSplit].forEach((w, idx) => {
+        const div = document.createElement("div");
+        div.className = "item-row";
+        div.innerHTML = `
+          <div>
+            <strong>${idx + 1}. ${w.name}</strong>
+            <div class="item-meta">${w.muscle} • ${w.sets}</div>
+          </div>
+          <button class="btn-ghost" onclick="selectExercise(${idx})">معاينة الأداء</button>
+        `;
+        box.appendChild(div);
+      });
+    }
+
+    function selectExercise(idx) {
+      const ex = workoutsData[currentSplit][idx];
+      document.getElementById("videoBox").innerHTML = `
+        <strong style="color: var(--gold);">${ex.name} (${ex.sets})</strong>
+        <p style="margin-top: 6px;">${ex.tip}</p>
+        <div class="item-meta" style="margin-top: 6px;">مكان جاهز لربط ملف فيديو الأداء الواقعي: <code>/videos/${currentSplit}-${idx + 1}.mp4</code></div>
+      `;
+    }
+
+    function recalcMetrics() {
+      const w = parseFloat(document.getElementById("weightInput").value) || 75;
+      const hCm = parseFloat(document.getElementById("heightInput").value) || 175;
+      const hM = hCm / 100;
+      const bmi = (w / (hM * hM)).toFixed(1);
+      const goal = document.getElementById("goalSelect").value;
+      const baseKcal = w * 30;
+      const finalKcal = goal === "cutting" ? Math.round(baseKcal - 350) : goal === "bulking" ? Math.round(baseKcal + 350) : Math.round(baseKcal);
+
+      document.getElementById("valBmi").textContent = bmi;
+      document.getElementById("valCalories").textContent = `${finalKcal.toLocaleString()} kcal`;
+      document.getElementById("mealGoalSelect").value = goal;
+    }
+
+    function renderMeals() {
+      const curr = document.getElementById("currencySelect").value;
+      const lang = document.getElementById("langSelect").value;
+      const budgetInputVal = parseFloat(document.getElementById("budgetInput").value) || 150;
+      const budgetInEgp = budgetInputVal / rates[curr];
+      const goal = document.getElementById("mealGoalSelect").value;
+
+      document.getElementById("valBudget").textContent = formatMoney(budgetInEgp);
+
+      const list = document.getElementById("mealList");
+      list.innerHTML = "";
+
+      let remainingEgp = budgetInEgp;
+      mealsPool.forEach(m => {
+        const matchesGoal = m.goal === goal || goal === "symmetry";
+        const fitsBudget = remainingEgp >= m.baseCostEgp;
+        if (matchesGoal || fitsBudget) {
+          const row = document.createElement("div");
+          row.className = "item-row";
+          const title = lang === "ar" ? m.titleAr : m.titleEn;
+          const statusTxt = fitsBudget
+            ? (lang === "ar" ? "ضمن الميزانية" : "Within budget")
+            : (lang === "ar" ? "يتجاوز الميزانية المتبقية" : "Over remaining budget");
+
+          row.innerHTML = `
+            <div>
+              <strong>${title}</strong>
+              <div class="item-meta">${m.kcal} kcal • ${statusTxt}</div>
+            </div>
+            <span class="price-tag">${formatMoney(m.baseCostEgp)}</span>
+          `;
+          list.appendChild(row);
+          if (fitsBudget) remainingEgp -= m.baseCostEgp;
+        }
+      });
+    }
+
+    function previewImage(event, targetId) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById(targetId).innerHTML = `<img src="${e.target.result}" alt="Preview" />`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function setPortal(type) {
+      document.getElementById("tabTrainee").classList.toggle("active", type === "trainee");
+      document.getElementById("tabTrainer").classList.toggle("active", type === "trainer");
+      document.getElementById("traineePortalBox").style.display = type === "trainee" ? "block" : "none";
+      document.getElementById("trainerPortalBox").style.display = type === "trainer" ? "block" : "none";
+      document.getElementById("portalBadge").textContent = type === "trainer" ? "مدرب / Trainer" : "متدرب / Trainee";
+      if (type === "trainer") renderRequests();
+    }
+
+    function submitCoachForm(e) {
+      e.preventDefault();
+      const reqs = JSON.parse(localStorage.getItem("gym_coach_requests") || "[]");
+      reqs.unshift({
+        name: document.getElementById("clientName").value,
+        goal: document.getElementById("clientGoal").value,
+        budget: document.getElementById("clientBudget").value,
+        notes: document.getElementById("clientNotes").value,
+        date: new Date().toLocaleDateString()
+      });
+      localStorage.setItem("gym_coach_requests", JSON.stringify(reqs));
+      e.target.reset();
+      const notice = document.getElementById("formNotice");
+      notice.style.display = "block";
+      setTimeout(() => (notice.style.display = "none"), 3500);
+    }
+
+    function renderRequests() {
+      const container = document.getElementById("requestsContainer");
+      const reqs = JSON.parse(localStorage.getItem("gym_coach_requests") || "[]");
+      if (!reqs.length) {
+        container.innerHTML = `<div class="item-meta">لا توجد طلبات مسجلة حتى الآن.</div>`;
+        return;
+      }
+      container.innerHTML = reqs.map(r => `
+        <div class="item-row">
+          <div>
+            <strong>${r.name} — ${r.goal}</strong>
+            <div class="item-meta">${r.notes}</div>
+          </div>
+          <span class="price-tag">${r.budget} (${r.date})</span>
+        </div>
+      `).join("");
+    }
+
+    document.getElementById("currencySelect").addEventListener("change", renderMeals);
+    document.getElementById("langSelect").addEventListener("change", (e) => {
+      const isAr = e.target.value === "ar";
+      document.documentElement.lang = isAr ? "ar" : "en";
+      document.documentElement.dir = isAr ? "rtl" : "ltr";
+      document.getElementById("heroTitle").textContent = isAr
+        ? "قوة الفرعون وتخطيط ذكي لفورمتك وتغذيتك"
+        : "Pharaoh Strength & Smart Physique + Meal Planning";
+      document.getElementById("navHomeTxt").textContent = isAr ? "الرئيسية" : "Home";
+      document.getElementById("navWorkoutsTxt").textContent = isAr ? "التمارين" : "Workouts";
+      document.getElementById("navMealsTxt").textContent = isAr ? "الوجبات" : "Meals";
+      document.getElementById("navCoachTxt").textContent = isAr ? "البوابات" : "Portals";
+      renderMeals();
+    });
+
+    recalcMetrics();
+    renderWorkouts();
+    renderMeals();
+  </script>
+</body>
+</html>
